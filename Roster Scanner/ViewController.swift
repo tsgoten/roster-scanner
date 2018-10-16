@@ -11,45 +11,24 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
-    var captureSession = AVCaptureSession()
-    
-    var backFacingCamera: AVCaptureDevice?
-    var frontFacingCamera: AVCaptureDevice?
-    var currentDevice: AVCaptureDevice?
-    
-    var stillImageOutput: AVCapturePhotoOutput?
-    var stillImage: UIImage?
-    
-    var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    @IBOutlet weak var capturePreviewView: UIView!
+    let cameraController = CameraController()
+
+}
+
+extension ViewController {
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        captureSession.sessionPreset = AVCaptureSession.Preset.photo
-        
-        if let device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
-            backFacingCamera = device
+        func configureCameraController() {
+            cameraController.prepare{(error) in
+                if let error = error {
+                    print(error)
+                }
+                try? self.cameraController.displayPreview(on: self.capturePreviewView)
+                
+            }
         }
-        
-        currentDevice = backFacingCamera
-        
-        stillImageOutput = AVCapturePhotoOutput()
-        
-        
-        do {
-            let captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice!)
-            
-            captureSession.addInput(captureDeviceInput)
-            captureSession.addOutput(stillImageOutput!)
-            
-            cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-            view.layer.addSublayer(cameraPreviewLayer!)
-            cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            cameraPreviewLayer?.frame = view.layer.frame
-        } catch let error {
-            print (error)
-        }
+        configureCameraController()
     }
-    
 }
 
