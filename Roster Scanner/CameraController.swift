@@ -6,6 +6,7 @@
 //  Copyright © 2018 Tarang Srivastava. All rights reserved.
 //
 
+import UIKit
 import AVFoundation
 
 class CameraController {
@@ -76,5 +77,13 @@ extension CameraController {
             }
         }
     }
-    
+    func displayPreview(on view:UIView) throws {
+        guard let captureSession = self.captureSession, captureSession.isRunning else { throw CameraControllerError.captureSessionIsMissing}
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        self.previewLayer?.connection?.videoOrientation = .portrait
+        
+        view.layer.insertSublayer(previewLayer!, at: 0)
+        previewLayer?.frame = view.frame
+    }
 }
