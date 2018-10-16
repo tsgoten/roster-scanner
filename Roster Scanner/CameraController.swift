@@ -17,8 +17,6 @@ class CameraController {
     
     var cameraPosition = "rear"; //Fix this to only use rear
     
-}
-extension CameraController {
     enum CameraControllerError: Swift.Error {
         case captureSessionAlreadyRunning
         case captureSessionIsMissing
@@ -26,5 +24,25 @@ extension CameraController {
         case invalidOperation
         case noCamerasAvailable
         case unknown
+    }
+    
+}
+extension CameraController {
+    
+    func prepare(completionHandler: @escaping(Error?) -> Void) {
+        func createCaptureSession() {
+            captureSession = AVCaptureSession()
+        }
+        func configureCaptureDevices() throws {
+            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back)
+            for camera in session.devices {
+                if camera.position == .back {
+                    self.camera = camera
+                    try camera.lockForConfiguration()
+                    camera.focusMode = .continuousAutoFocus
+                    camera.unlockForConfiguration()
+                }
+            }
+        }
     }
 }
