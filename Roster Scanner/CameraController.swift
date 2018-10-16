@@ -11,11 +11,10 @@ import AVFoundation
 class CameraController {
     
     var captureSession: AVCaptureSession?
-    
     var camera: AVCaptureDevice?
     var cameraInput: AVCaptureDeviceInput?
-    
-    var cameraPosition = "rear"; //Fix this to only use rear
+    var photoOutput: AVCapturePhotoOutput?
+    var previewLayer: AVCaptureVideoPreviewLayer?
     
     enum CameraControllerError: Swift.Error {
         case captureSessionAlreadyRunning
@@ -43,6 +42,19 @@ extension CameraController {
                     camera.unlockForConfiguration()
                 }
             }
+        }
+        func configureDeviceInputs() throws {
+            guard let captureSession = self.captureSession else { throw CameraControllerError.captureSessionIsMissing }
+            if let camera = self.camera {
+                cameraInput = try AVCaptureDeviceInput(device: camera)
+                if captureSession.canAddInput(cameraInput!){ captureSession.addInput(cameraInput!) }
+            }
+            else { throw CameraControllerError.noCamerasAvailable }
+        }
+        func configurePhotoOutput() throws {
+            guard let captureSession = self.captureSession else { throw CameraControllerError.captureSessionIsMissing }
+            
+            
         }
     }
 }
