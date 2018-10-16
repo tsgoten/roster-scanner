@@ -53,8 +53,28 @@ extension CameraController {
         }
         func configurePhotoOutput() throws {
             guard let captureSession = self.captureSession else { throw CameraControllerError.captureSessionIsMissing }
-            
-            
+            photoOutput = AVCapturePhotoOutput()
+           self.photoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])], completionHandler: nil)
+            if captureSession.canAddOutput(photoOutput!) { captureSession.addOutput(photoOutput!) }
+            captureSession.startRunning()
+        }
+        DispatchQueue(label: "prepare").async {
+            do {
+                createCaptureSession()
+                try configureCaptureDevices()
+                try configureDeviceInputs()
+                try configurePhotoOutput()
+            }
+            catch {
+                DispatchQueue.main.async {
+                    completionHandler(error)
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                completionHandler(nil)
+            }
         }
     }
+    
 }
