@@ -10,10 +10,24 @@ import UIKit
 import AVFoundation
 
 class ViewController: UIViewController {
-    
+
+    var capturePreviewView: UIView!
+    let cameraController = CameraController()
+
+}
+
+extension ViewController {
     override func viewDidLoad() {
-        super.viewDidLoad()
+        func configureCameraController() {
+            cameraController.prepare{(error) in
+                if let error = error {
+                    print(error)
+                }
+                try? self.cameraController.displayPreview(on: self.capturePreviewView)
+                
+            }
+        }
+        configureCameraController()
     }
-    
 }
 
