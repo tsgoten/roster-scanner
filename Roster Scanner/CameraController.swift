@@ -10,4 +10,21 @@ import AVFoundation
 
 class CameraController {
     
+    var captureSession: AVCaptureSession?
+    
+    var camera: AVCaptureDevice?
+    var cameraInput: AVCaptureDeviceInput?
+    
+    var cameraPosition = "rear"; //Fix this to only use rear
+    
+}
+extension CameraController {
+    enum CameraControllerError: Swift.Error {
+        case captureSessionAlreadyRunning
+        case captureSessionIsMissing
+        case inputsAreInvalid
+        case invalidOperation
+        case noCamerasAvailable
+        case unknown
+    }
 }
