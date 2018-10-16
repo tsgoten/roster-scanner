@@ -11,12 +11,13 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
-    var capturePreviewView: UIView!
+    @IBOutlet weak var capturePreviewView: UIView!
     let cameraController = CameraController()
 
 }
 
 extension ViewController {
+    
     override func viewDidLoad() {
         func configureCameraController() {
             cameraController.prepare{(error) in
