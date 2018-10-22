@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Vision
 
 class CameraController {
     
@@ -85,5 +86,10 @@ extension CameraController {
         
         view.layer.insertSublayer(previewLayer!, at: 0)
         previewLayer?.frame = view.frame
+    }
+}
+extension CameraController {
+    func scanImage ()  {
+        
     }
 }

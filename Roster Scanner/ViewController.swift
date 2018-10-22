@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Vision
+import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -28,6 +30,7 @@ extension ViewController {
             }
         }
         configureCameraController()
+        cameraController.scanImage()
     }
 }
 
