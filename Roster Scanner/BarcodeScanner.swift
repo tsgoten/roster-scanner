@@ -7,3 +7,8 @@
 //
 
 import Vision
+
+private func scanImage(cgImage: CGImage) {
+    let handler = VNImageRequestHandler(cgImage: cgImage, options: [.properties : ""])
+
+}
