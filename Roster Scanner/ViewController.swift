@@ -10,6 +10,7 @@ import UIKit
 import Vision
 import AVFoundation
 
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var capturePreviewView: UIView!
