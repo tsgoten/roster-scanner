@@ -1,5 +1,7 @@
 # Roster Scanner
 Roster Scanner uses Apple's Vision API to scan the barcode in student IDs.
+## XCWorkspace
+Open the XCWorkspace file after you clone.
 ## Technology
 XCode 10.0
 AVFoundation
