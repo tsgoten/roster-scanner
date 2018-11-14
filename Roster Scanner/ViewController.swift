@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 import Vision
+import FirebaseDatabase
+import Firebase
 
 class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
@@ -18,8 +20,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     // barcode detection
     var request : VNDetectBarcodesRequest?
     var seqHandler : VNSequenceRequestHandler!
-
+    // for the alertView
     var paused : Bool = false
+    // for the database
+    var ref: DatabaseReference?
+    var students = [String]()
     
     @IBOutlet weak var cameraView: UIView!
     
@@ -35,6 +40,24 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     override func viewDidLayoutSubviews() {
         previewLayer?.frame = self.cameraView.bounds
+    }
+    
+    private func writeToDatabase(code: String) {
+        ref = Database.database().reference()
+        var rep = true
+        for student in students {
+            print(student)
+            print(code)
+            if student == code {
+                rep = false
+            }
+        }
+        if rep {
+            students.append(code)
+            self.ref!.child("students").childByAutoId().setValue(code)
+        }
+       // self.ref!.child("students").child().setValue(code)
+        
     }
     
     private func startVideoFeed() {
@@ -78,7 +101,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             return
         }
         
-        // https://stackoverflow.com/questions/51214586/value-of-type-cmsamplebuffer-has-no-member-imagebuffer
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             return
         }
@@ -101,15 +123,13 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         self.paused = true
         
-        label.text = payload
-        
-        
         let title = "Hi, I found this."
         
         let alertView = UIAlertController(title: title, message: payload, preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) {
             (action) in
+            self.writeToDatabase(code: payload)
             self.paused = false
         }
         

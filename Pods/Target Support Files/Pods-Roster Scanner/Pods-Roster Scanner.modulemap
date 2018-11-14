@@ -1,0 +1,6 @@
+framework module Pods_Roster_Scanner {
+  umbrella header "Pods-Roster Scanner-umbrella.h"
+
+  export *
+  module * { export * }
+}
