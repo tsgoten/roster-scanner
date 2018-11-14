@@ -49,6 +49,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         session.addOutput(deviceOutput)
         
         let imageLayer = AVCaptureVideoPreviewLayer(session: session)
+        // adding prview to the view
         imageLayer.frame = self.view.bounds
         self.cameraView.layer.addSublayer(imageLayer)
         
@@ -100,7 +101,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         self.paused = true
         
-        let title = "\(observation.symbology.rawValue) barcode detected (confidence \(observation.confidence))"
+        let title = "Hi, I found this."
         
         let alertView = UIAlertController(title: title, message: payload, preferredStyle: .alert)
         
