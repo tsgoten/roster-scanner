@@ -101,27 +101,29 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         self.paused = true
         
+        label.text = payload
+        
+        
         let title = "Hi, I found this."
         
         let alertView = UIAlertController(title: title, message: payload, preferredStyle: .alert)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        let addAction = UIAlertAction(title: "Add", style: .default) {
+            (action) in
             self.paused = false
         }
         
-        let shareAction = UIAlertAction(title: "Share", style: .default) { (action) in
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {
+            (action) in
             self.paused = false
-            
-            let shareSheet = UIActivityViewController(activityItems: [payload], applicationActivities: nil)
-            self.present(shareSheet, animated: true, completion: nil)
         }
         
         alertView.addAction(cancelAction)
-        alertView.addAction(shareAction)
-        
+        alertView.addAction(addAction)
+
         let generator = UISelectionFeedbackGenerator()
         generator.prepare()
-        
+
         present(alertView, animated: false) {
             generator.selectionChanged()
         }
