@@ -33,5 +33,7 @@ extension ViewController {
         configureCameraController()
         cameraController.scanImage()
     }
+    
+    
 }
 
